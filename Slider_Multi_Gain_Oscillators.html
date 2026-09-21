@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+
+
 <html lang = "en">
     <head>
         <meta charset = "UTF-8">
@@ -8,15 +10,15 @@
 
     <input id = "gain1" type="range" min="0" max="1" step="0.001" value="0.0"><label id="gainDisplay1">GainLevel_1</label>
     <input id = "gain2" type="range" min="0" max="1" step="0.001" value="0.0"><label id="gainDisplay2">GainLevel_2</label>
-   
-    <script>
+   <input id = "gain3" type="range" min="0" max ="1" step="0.001" value="0.0"><label id="gainDisplay3">GainLevel_3</label>
+   <input id = "gain4" type="range" min="0" max ="1" step="0.001" value="0.0"><label id="gainDisplay4">GainLevel_4</label>
+   <script>
         const ctx = new AudioContext();
         ctx.suspend();
 
         const osc1 = new OscillatorNode(ctx);
         let freq = 110
         osc1.frequency.value = freq
-       
         const osc2 = new OscillatorNode(ctx);
         osc2.frequency.value = freq * 1.01
         const osc3 = new OscillatorNode(ctx);
@@ -25,7 +27,6 @@
         
         
         const gain = new GainNode(ctx);
-        gain.gain.value = 0.1;
 
         osc1.connect(gain);
         osc2.connect(gain);
@@ -75,7 +76,53 @@
 
         });
 
+        const gain3 = new GainNode(ctx);
+        const osc7 = new OscillatorNode(ctx);
+        const osc8 = new OscillatorNode(ctx);
+        const osc9 = new OscillatorNode(ctx);
+        
+        osc7.frequency.value = freq*1.5;
+        osc8.frequency.value = freq*3.0001;
+        osc9.frequency.value = freq*2.999;
 
+        osc7.connect(gain3);
+        osc8.connect(gain3);
+        osc9.connect(gain3);
+        gain3.connect(ctx.destination);
+        osc7.start();
+        osc8.start();
+        osc9.start();
+
+        const slider3 = document.querySelector("#gain3");
+        slider3.addEventListener("input", () => {
+            ctx.resume();
+            gain3.gain.value = Number(slider3.value);
+            document.querySelector("gainDisplay3").textContent = slider3.value
+        });
+
+        const gain4 = new GainNode(ctx);
+        const osc10 = new OscillatorNode(ctx);
+        const osc11 = new OscillatorNode(ctx);
+        const osc12 = new OscillatorNode(ctx);
+        
+        osc10.frequency.value = freq*4;
+        osc11.frequency.value = freq*4.5;
+        osc12.frequency.value = freq*5;
+
+        osc10.connect(gain4);
+        osc11.connect(gain4);
+        osc12.connect(gain4);
+        gain4.connect(ctx.destination);
+        osc10.start();
+        osc11.start();
+        osc12.start();
+
+        const slider4 = document.querySelector("#gain4");
+        slider4.addEventListener("input", () => {
+            ctx.resume();
+            gain4.gain.value = Number(slider4.value);
+            document.querySelector("gainDisplay4").textContent = slider4.value
+        });
     
     </script>
 
